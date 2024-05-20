@@ -1,0 +1,24 @@
+<div class="ui middle aligned selection divided list">
+    <div class="item">
+        <label>Filter nach Tag: </label>
+        <select class="ui dropdown" #selectedTag (change)="onSelectTag(selectedTag.value)">
+            <option value="">All Todos</option>
+            @for(tag of tags; track tag){
+                <option [value]="tag.id">{{ tag.name }}</option>
+            }
+        </select>
+    </div>
+
+    @for (todo of filteredTodos; track todo; let l =$last) {
+        <en-todo-details [todo]="todo"></en-todo-details>
+        @if(!l){<br>}
+    }
+    <div class="sixteen wide column">
+        <div class="ui divider"></div>
+        @if(authService.isLoggedIn()) {
+            <a [routerLink]="['/edit/todos']" class="ui green button" (click)="onCreateTodo()" >
+                <i class="plus icon"></i> Todo erstellen
+            </a>
+        }
+    </div>
+</div>

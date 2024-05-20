@@ -1,0 +1,13 @@
+<div class="ui middle aligned selection divided list">
+    @for (list of lists; track list) {
+    <a class="item" class="item en-list-list-item" [list]="list" [routerLink]="list.id.toString()">
+    </a>
+    }
+    <div class="sixteen wide column">
+        @if(authService.isLoggedIn()) {
+            <a [routerLink]="['/edit/lists']" class="ui green button">
+                <i class="plus icon"></i> Liste erstellen
+            </a>
+        }
+    </div>
+</div>

@@ -1,0 +1,25 @@
+@if(todo != undefined){
+    <div class="ui item segment">
+        <i class="large middle aligned icon check circle outline"></i>
+        <div class="content">
+            <div class="header">{{ todo.title }}</div>
+            <div class="description">Fällig am: {{ todo.due_date }}</div>
+            <div class="description">Erstellt von: {{ todo.creator.first_name }} {{ todo.creator.last_name }}</div>
+            @if(todo.assignee){
+                <div class="meta">Zugewiesen an: {{ todo.assignee.first_name }} {{todo.assignee.last_name}}</div>
+            }
+        </div>
+        @for(todoTag of todo.tags; track todoTag){
+            <div class="ui tag label">{{ todoTag.name }}</div>
+        }
+        <div class="ui divider"></div>
+        @if(authService.isLoggedIn() && isAllowed()) {
+            <div class="extra content">
+                <button class="ui red button" (click)="removeTodo()">Todo löschen</button>
+                <a [routerLink]="['/edit/todos', todo.id]" class="ui yellow button">
+                    <i class="edit icon"></i> Todo bearbeiten
+                </a>
+            </div>
+        }
+    </div>
+}

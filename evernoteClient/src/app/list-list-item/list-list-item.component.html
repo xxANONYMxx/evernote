@@ -1,0 +1,19 @@
+@if(list != undefined){
+    <div class="content">
+    <div class="header">{{ list.name }}</div>
+        <div class="metadata">
+        @if(list.users && list.users.length > 0){
+            <span>Geteilt mit: </span>
+        }
+        @for (user of list.users; track user; let l =$last) {
+            @if(user.pivot && user.pivot['is_accepted']){
+                <span>{{ user.first_name }} {{ user.last_name }}@if(!l){<span>, </span>}</span>
+            }
+        }
+        </div>
+        <div class="extra">Ersteller: {{ list.creator.first_name }} {{ list.creator.last_name }}</div>
+        @if(list.is_public){
+            <i class="globe icon"></i>
+        }
+    </div>
+}

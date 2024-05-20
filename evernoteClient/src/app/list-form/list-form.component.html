@@ -1,0 +1,47 @@
+<h1>Listen Formular</h1>
+<form class="ui large form" [formGroup]="listForm" (ngSubmit)="submitForm()">
+  <div class="field">
+    <label for="name">Name der Liste:</label>
+    <input type="text" id="name" formControlName="name">
+  </div>
+  <div class="field">
+    <label for="is_public">Liste öffentlich machen?</label>
+    <div class="ui">
+      <input type="checkbox" id="is_public" formControlName="is_public">
+      @if(listForm.controls['is_public'].value){
+        <i class="globe icon"></i> {{ listForm.controls['is_public'].value ? 'Ja' : 'Nein' }}
+      } 
+      @if(!listForm.controls['is_public'].value){
+        <i class="globe icon disabled"></i> {{ listForm.controls['is_public'].value ? 'Ja' : 'Nein' }}
+      }
+    </div>
+    
+  </div>
+
+  <div formArrayName="users">
+    <label>Geteilt mit:</label>
+    @for(userControl of users.controls; track userControl; let i = $index){
+        <div>
+            <div [formGroupName]="i" class="field">
+              <span>{{ userControl.value.first_name }} {{ userControl.value.last_name }}</span>
+              <button class="ui red button small" type="button" (click)="removeUserControl(i)">Benutzer entfernen</button>
+            </div>
+          </div>
+    }
+
+    <div class="field">
+      <select #selectedUser (change)="addUserControl(selectedUser.value)">
+        <option default>Wähle einen Benutzer</option>
+        @for(user of availableUsers; track user){
+          <option [value]="user.id">
+            {{ user.first_name }} {{ user.last_name }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+
+  
+
+  <button type="submit" class="ui button" [disabled]="listForm.invalid">Speichern</button>
+</form>

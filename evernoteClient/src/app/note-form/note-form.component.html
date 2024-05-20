@@ -1,0 +1,43 @@
+<h1>Notizen Formular</h1>
+<form class="ui large form" [formGroup]="noteForm" (ngSubmit)="submitForm()">
+  <div class="field">
+    <label for="title">Titel der Notiz:</label>
+    <input type="text" id="title" formControlName="title">
+  </div>
+
+  <div class="field">
+    <label for="description">Beschreibung der Notiz:</label>
+    <input type="text" id="description" formControlName="description">
+  </div>
+
+  <div class="field">
+    <label for="image">Bild der Notiz:</label>
+    <input type="text" id="image" formControlName="image">
+  </div>
+  
+  <div formArrayName="tags">
+    <label>Tags:</label>
+    @for(tagControl of tags.controls; track tagControl; let i = $index){
+        <div>
+            <div [formGroupName]="i" class="field">
+              <span>{{ tagControl.value.name }}</span>
+              <button class="ui red button small" type="button" (click)="removeTagControl(i)">Tag entfernen</button>
+            </div>
+          </div>
+    }
+
+    <div class="field">
+      <select #selectedTag (change)="addTagControl(selectedTag.value)">
+        <option default>Wähle eine Tag</option>
+        @for(tag of availableTags; track tag){
+          <option [value]="tag.id">
+            {{ tag.name }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+  
+
+  <button type="submit" class="ui button" [disabled]="noteForm.invalid">Speichern</button>
+</form>

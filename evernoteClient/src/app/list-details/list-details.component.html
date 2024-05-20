@@ -1,0 +1,62 @@
+@if(list){
+    <div class="ui grid container">
+        <div class="sixteen wide column">
+            <h1 class="ui header">{{ list.name }}</h1>
+            <div class="ui divider"></div>
+            <div class="ui stackable two column grid">
+                <div class="column">
+                    <div class="ui raised segment">
+                        <h4 class="ui header">Erstellt von: </h4>
+                        <p><i class="user icon"></i> {{ list.creator.first_name }} {{ list.creator.last_name }}</p>
+                        <h4 class="ui header">Öffentlich</h4>
+                        @if(list.is_public){
+                            <p><i class="globe icon"></i> {{ list.is_public ? 'Ja' : 'Nein' }}</p>
+                        } 
+                        @if(!list.is_public){
+                            <p><i class="globe icon disabled"></i> {{ list.is_public ? 'Ja' : 'Nein' }}</p>
+                        }   
+                    </div>                 
+                </div>
+            </div>
+        </div>
+        <div class="sixteen wide column">
+            <h3 class="ui header">Notizen</h3>
+            @if(authService.isLoggedIn() && isAllowed()) {
+                <a [routerLink]="['/edit/notes']" class="ui green button">
+                    <i class="plus icon"></i> Notiz erstellen
+                </a>
+            }
+            <div class="ui divider"></div>
+            <div class="ui cards centered">
+                @for (note of list.notes; track note){
+                    <en-note-details [note]="note" [list]="list"></en-note-details>
+                }
+            </div>
+            <div class="ui divider"></div>
+            <h3 class="ui header">Geteilt mit:</h3>
+            <div class="ui list">
+                @for (user of list.users; track user){
+                    <div>
+                        <i class="user icon"></i> {{ user.first_name }} {{ user.last_name }}
+                        @if(user.pivot && user.pivot['is_accepted']){
+                            <i class="check icon"></i>
+                        }
+                        @if(user.pivot && !user.pivot['is_accepted']){
+                            <i class="clock outline icon"></i>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="sixteen wide column">
+            <button [routerLink]="['/lists']" class="ui button">Zurück zur Übersicht</button>
+            @if(authService.isLoggedIn() && userId == list.created_by ) {
+                <button class="ui red button" (click)="removeList()">Liste löschen</button>
+                <a [routerLink]="['/edit/lists', list.id]" class="ui yellow button">
+                    <i class="edit icon"></i> Liste bearbeiten
+                </a>
+            }
+        </div>
+    </div>
+    
+}

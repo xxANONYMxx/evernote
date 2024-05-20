@@ -1,0 +1,52 @@
+@if(note != undefined && list != undefined){
+    <div class="content segment ui">
+        <a class="header">{{ note.title }}</a>
+        <div class="meta">
+            <span class="meta">{{ note.description }}</span>
+        </div>
+
+        @if(authService.isLoggedIn() && isAllowed()) {
+            <div class="extra content">
+                <button class="ui red button" (click)="removeNote()">Notiz löschen</button>
+                <a [routerLink]="['/edit/notes', note.id]" class="ui yellow button">
+                    <i class="edit icon"></i> Notiz bearbeiten
+                </a>
+            </div>
+        }
+
+        <div class="ui divider"></div>
+
+        @for(noteTag of note.tags; track noteTag){
+            <div class="ui tag label">{{ noteTag.name }}</div>
+        }
+        
+        @if(note.tags && note.tags.length > 0){
+            <div class="ui divider"></div>
+        }
+        
+        @if(note.image){
+            <div class="description">
+                @if(note.image){
+                    <img src="{{note.image}}" alt="Notizbild" class="ui tiny rounded image">
+                }
+            </div>
+        }
+    
+    
+
+        <div class="extra content">
+            <h4 class="ui header">Aufgaben</h4>
+            @if(authService.isLoggedIn() && isAllowed()) {
+                <a [routerLink]="['/edit/todos']" class="ui green button" (click)="onCreateTodo()">
+                    <i class="plus icon"></i> Todo erstellen
+                </a>
+            }
+            <div class="ui list">
+                @for (todo of note.todos; track todo; let l =$last){
+                    <en-todo-details [todo]="todo" [list]="list"></en-todo-details>
+                    @if(!l){<div class="ui divider"></div>}
+                }
+            </div>
+        </div>
+    </div>
+}

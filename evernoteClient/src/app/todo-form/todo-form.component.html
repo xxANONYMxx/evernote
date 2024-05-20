@@ -1,0 +1,58 @@
+<h1>Todo Formular</h1>
+<form class="ui large form" [formGroup]="todoForm" (ngSubmit)="submitForm()">
+  <div class="field">
+    <label for="title">Titel des Todos:</label>
+    <input type="text" id="title" formControlName="title">
+  </div>
+
+  <div class="field">
+    <label for="description">Beschreibung des Todos:</label>
+    <input type="text" id="description" formControlName="description">
+  </div>
+  
+  <div class="field">
+    <label for="due_date">Fälligkeitsdatum des Todos:</label>
+    <input type="date" id="due_date" formControlName="due_date" placeholder="Deadline"/>
+  </div>
+
+  <div class="field">
+    <label for="assigned_to">Todo zuweisen an:</label>
+    <select formControlName="assigned_to" id="assigned_to">
+      @if(this.todo.assigned_to != null){
+        <option value="">Benutzer wählen</option>
+      }
+      @if(this.todo.assigned_to == null){
+        <option selected value="">Benutzer wählen</option>
+      }
+      @for(user of availableUsers; track user){
+        <option [value]="user.id">{{ user.first_name }} {{ user.last_name }}</option>
+      }
+    </select>
+  </div>
+
+  <div formArrayName="tags">
+    <label>Tags:</label>
+    @for(tagControl of tags.controls; track tagControl; let i = $index){
+      <div>
+          <div [formGroupName]="i" class="field">
+          <span>{{ tagControl.value.name }}</span>
+          <button class="ui red button small" type="button" (click)="removeTagControl(i)">Tag entfernen</button>
+          </div>
+      </div>
+    }
+
+    <div class="field">
+      <select #selectedTag (change)="addTagControl(selectedTag.value)">
+        <option default>Wähle eine Tag</option>
+        @for(tag of availableTags; track tag){
+          <option [value]="tag.id">
+            {{ tag.name }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+  
+
+  <button type="submit" class="ui button green" [disabled]="todoForm.invalid">Speichern</button>
+</form>

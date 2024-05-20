@@ -1,0 +1,9 @@
+<h1>Tag Formular</h1>
+<form class="ui large form" [formGroup]="tagForm" (ngSubmit)="submitForm()">
+  <div class="field">
+    <label for="name">Name des Tags:</label>
+    <input type="text" id="name" formControlName="name">
+  </div>  
+
+  <button type="submit" class="ui button" [disabled]="tagForm.invalid">Speichern</button>
+</form>

@@ -1,0 +1,9 @@
+<div class="ui middle aligned selection divided list">
+    @for (list of lists; track list) {
+    <a class="item" class="item en-list-list-item" [list]="list">   
+    </a>
+    <button class="ui green button" (click)="onAccept(list.id.toString())">
+        <i class="plus icon"></i> Anfrage annehmen
+    </button>
+    }
+</div>
